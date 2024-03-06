@@ -47,7 +47,7 @@ function getStamp(req, res){
     res.json({"error":"Invalid Date"});
   } else if (req.path == "/api/"){
     res.json({unix:l.getTime(),utc:l.toUTCString()})
-  } else {
+  } else if (d == "Invalid Date"){
     res.json({unix:m.getTime(),utc:m.toUTCString()});
   }
   res.json({unix:d.getTime(),utc:d.toUTCString()});
@@ -55,7 +55,7 @@ function getStamp(req, res){
 
 app.get("/api/", function today(req,res){
   const l = new Date();
-  res.json({unix:l.getTime(), utc:l.toUTCString()});
+  res.json({unix:l.getTime(), utc:l.toUTCString()})
 })
 
 // Listen on port set in environment variable or default to 3000
