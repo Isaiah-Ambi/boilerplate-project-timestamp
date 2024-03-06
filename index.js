@@ -24,17 +24,39 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// app.get("/api",function getDate(req, res){
+//   const d = new Date()
+//   res.json({unix:d.getTime(),utc:d.toUTCString()});
+// });
 
 
+app.get("/api/:date", getStamp);
+// app.get("/api/:date?", getStamp);
 
-app.get("/api/:date",function getDate(req, res){
-  const d = new Date(req.params.date).toUTCString();
-  const m = new Date(req.params.date).getTime();
+
+function getStamp(req, res){
+
+  const d = new Date(req.params.date);
+  const m = new Date(parseInt(req.params.date));
+  const l = new Date();
   console.log(d);
   console.log(m);
-  res.json({"unix":m,"utc":d});
-});
+  console.log(l);
 
+  if (d == "Invalid Date" && m == "Invalid Date"){
+    res.json({"error":"Invalid Date"});
+  } else if (req.path == "/api/"){
+    res.json({unix:l.getTime(),utc:l.toUTCString()})
+  } else {
+    res.json({unix:m.getTime(),utc:m.toUTCString()});
+  }
+  res.json({unix:d.getTime(),utc:d.toUTCString()});
+}
+
+app.get("/api/", function today(req,res){
+  const l = new Date();
+  res.json({unix:l.getTime(), utc:l.toUTCString()});
+})
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
